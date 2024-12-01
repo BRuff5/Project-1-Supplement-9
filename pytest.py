@@ -1,37 +1,35 @@
 import unittest
 
-from main import integrate_linear_function
+from main import solve_system_of_equations
 
-class TestIntegrateLinearFunction(unittest.TestCase):
-    def test_integrate_linear_function(self):
-        # Test case 1: Simple linear function y = x over [0, 1]
-        slope = 1
-        intercept = 0
-        x_start = 0
-        x_end = 1
-        expected_result = 0.5  # Integral of y = x over [0, 1] is (1/2)x^2 | 0 to 1 = 0.5
-        result = integrate_linear_function(slope, intercept, x_start, x_end)
-        self.assertAlmostEqual(result, expected_result, places=6)
+class TestSolveSystemOfEquations(unittest.TestCase):
+    def test_solve_system_of_equations(self):
+        # Test case 1: Simple system
+        # x + y = 2
+        # x - y = 0
+        a1, b1, c1 = 1, 1, 2
+        a2, b2, c2 = 1, -1, 0
+        expected_result = {'X': 1, 'Y': 1}  # Solution: x=1, y=1
+        result = solve_system_of_equations(a1, b1, c1, a2, b2, c2)
+        self.assertAlmostEqual(result['X'], expected_result['X'], places=6)
+        self.assertAlmostEqual(result['Y'], expected_result['Y'], places=6)
 
-        # Test case 2: Linear function y = 2x + 3 over [1, 4]
-        slope = 2
-        intercept = 3
-        x_start = 1
-        x_end = 4
-        # Integral = (1/2)(2)x^2 + 3x | 1 to 4 = [(4^2 + 12) - (1^2 + 3)] = 41
-        expected_result = 41.0
-        result = integrate_linear_function(slope, intercept, x_start, x_end)
+        # Test case 2: System with fractional solution
+        # 2x + 3y = 6
+        # 4x + y = 8
+        a1, b1, c1 = 2, 3, 6
+        a2, b2, c2 = 4, 1, 8
+        expected_result = {'X': 1, 'Y': 4/3}  # Solution: x=1, y=4/3
+        result = solve_system_of_equations(a1, b1, c1, a2, b2, c2)
+
+        # Test case 3: Negative coefficients
+        # -x + 2y = 3
+        # 3x + y = -1
+        a1, b1, c1 = -1, 2, 3
+        a2, b2, c2 = 3, 1, -1
+        expected_result = {'X': -1, 'Y': 1}  # Solution: x=-1, y=1
+        result = solve_system_of_equations(a1, b1, c1, a2, b2, c2)
         
-
-        # Test case 3: Constant function y = 5 over [0, 10]
-        slope = 0
-        intercept = 5
-        x_start = 0
-        x_end = 10
-        # Integral = 5x | 0 to 10 = 5(10 - 0) = 50
-        expected_result = 50.0
-        result = integrate_linear_function(slope, intercept, x_start, x_end)
-        self.assertAlmostEqual(result, expected_result, places=6)
-
 if __name__ == "__main__":
     unittest.main()
+
